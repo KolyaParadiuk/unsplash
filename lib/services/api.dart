@@ -12,21 +12,29 @@ class ApiService {
     };
   }
 
-  Future<List<Photo>> getImages(int page,int perPage) async {
-    Response response = await _client.get('/photos',
-          queryParameters: {"page":page.toString(),"per_page":perPage.toString()});
-      return response.data!.map((element) {
-        Photo? p = serializers.deserializeWith(Photo.serializer, element);
-        return p;
-      });
-    }
-  
-  Future<List<Photo>> searchImages(String query, int page,int perPage) async {
-    Response response = await _client.get('/search/photos',
-          queryParameters: {"query":query,"page":page.toString(),"per_page":perPage.toString()});
-      return response.data!["results"].map((element) {
-        Photo? p = serializers.deserializeWith(Photo.serializer, element);
-        return p;
-      });
-    }
+  Future<List<Photo>> getImages(int page, int perPage) async {
+    Response<List<dynamic>> response = await _client.get('/photos',
+        queryParameters: {
+          "page": page.toString(),
+          "per_page": perPage.toString()
+        });
+    List<Photo> result = response.data!.map((element) {
+      Photo? p = serializers.deserializeWith(Photo.serializer, element);
+      return (p!);
+    }).toList();
+    
+    return result;
+  }
+
+  Future<List<Photo>> searchImages(String query, int page, int perPage) async {
+    Response response = await _client.get('/search/photos', queryParameters: {
+      "query": query,
+      "page": page.toString(),
+      "per_page": perPage.toString()
+    });
+    return response.data!["results"].map((element) {
+      Photo? p = serializers.deserializeWith(Photo.serializer, element);
+      return p;
+    });
+  }
 }

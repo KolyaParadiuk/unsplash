@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class UnspashTheme {
   static ThemeData theme = ThemeData(
     primaryColor: Color(0xFF3B2168),
+    primaryColorLight:Colors.white,
     accentColor: Color(0xFF942E91),
     backgroundColor: Color(0xFFF5F6F6),
     scaffoldBackgroundColor: Color(0xFFF5F6F6),
