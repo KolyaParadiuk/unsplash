@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:unsplash/router.dart';
-import 'package:unsplash/screens/ImageaFeedScreen.dart';
+import 'package:unsplash/screens/init.dart';
+import 'package:unsplash/states/appState.dart';
 import 'package:unsplash/theme.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(App());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class App extends StatelessWidget {
+  // This widget is the root of  application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: UnspashTheme.theme,
-      onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: ImageFeedScreen.navigationKey
+    return AppState(
+          child: MaterialApp(
+        theme: UnspashTheme.theme,
+        onGenerateRoute: AppRouter.generateRoute,
+        initialRoute: InitScreen.navigationKey
+      ),
     );
   }
 }
