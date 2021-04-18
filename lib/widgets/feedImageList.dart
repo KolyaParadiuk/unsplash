@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:unsplash/hooks/theme.dart';
 import 'package:unsplash/models/photo.dart';
@@ -8,12 +9,17 @@ class FeedImageList extends HookWidget {
   final List<Photo> images;
   final Function onEndReached;
   final Function onRefresh;
+  final Function hideAppbar;
+  final Function showAppbar;
 
 
   FeedImageList({
     required this.images,
     required this.onEndReached,
-    required this.onRefresh
+    required this.onRefresh,
+    required this.hideAppbar,
+    required this.showAppbar
+
   });
   @override
   Widget build(BuildContext context) {
@@ -23,6 +29,16 @@ class FeedImageList extends HookWidget {
       if (scrollController.value.position.extentAfter < 1000) {
         this.onEndReached();
       }
+      switch (scrollController.value.position.userScrollDirection) {
+      case ScrollDirection.forward:
+        showAppbar();
+        break;
+      case ScrollDirection.reverse:
+        hideAppbar();
+        break;
+      case ScrollDirection.idle:
+        break;
+    }
     }
 
     useEffect(() {
@@ -56,7 +72,7 @@ class FeedImageList extends HookWidget {
         controller: scrollController.value,
         child: Container(
           color: theme.primaryColorLight,
-          padding: EdgeInsets.only(left: 5, right: 5),
+          padding: EdgeInsets.only(left: 5, right: 5,top:MediaQuery.of(context).padding.top),
           child: Column(
             children: [
               (Row(

@@ -20,7 +20,9 @@ class ImageFeedScreen extends HookWidget {
     var searchQuery = useState('');
     var loading = useState(true);
     var error = useState(false);
-
+    var appBarHideAnimController = useAnimationController(initialValue: 1,duration: Duration(milliseconds: 300));
+    var hideAppbar = appBarHideAnimController.reverse;
+    var showAppbar = appBarHideAnimController.forward;
     loadRegularImages() async {
       loading.value = true;
       try {
@@ -83,11 +85,14 @@ class ImageFeedScreen extends HookWidget {
           color: theme.primaryColorLight,
           child: Center(child: CircularProgressIndicator()));
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: theme.primaryColorLight,
       appBar: PreferredSize(
           preferredSize:
               Size.fromHeight(MediaQuery.of(context).padding.top + 70),
           child: SearchBar(
+            initValuel: searchQuery.value,
+            animation: appBarHideAnimController,
             onSearch: onSearchSubmited,
           )),
       body: Stack(
@@ -96,6 +101,8 @@ class ImageFeedScreen extends HookWidget {
             images: images.value,
             onEndReached: onScrollReachEndOfPage,
             onRefresh: onRefresh,
+            hideAppbar: hideAppbar,
+            showAppbar: showAppbar,
           ),
         ],
       ),

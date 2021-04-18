@@ -16,6 +16,7 @@ class FeedImage extends HookWidget {
     var theme = useTheme();
     onTap() {
       showMaterialModalBottomSheet(
+        useRootNavigator:true,
         context: context,
         builder: (context) => ImageDetail(image: image),
       );
