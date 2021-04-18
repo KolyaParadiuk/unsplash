@@ -5,6 +5,7 @@ import 'package:unsplash/hooks/useSize.dart';
 import 'package:unsplash/models/photo.dart';
 import 'package:unsplash/states/api.dart';
 import 'package:unsplash/widgets/appbar.dart';
+import 'package:unsplash/widgets/empty.dart';
 import 'package:unsplash/widgets/error.dart';
 import 'package:unsplash/widgets/feedImageList.dart';
 
@@ -95,17 +96,14 @@ class ImageFeedScreen extends HookWidget {
             animation: appBarHideAnimController,
             onSearch: onSearchSubmited,
           )),
-      body: Stack(
-        children: [
-          FeedImageList(
-            images: images.value,
-            onEndReached: onScrollReachEndOfPage,
-            onRefresh: onRefresh,
-            hideAppbar: hideAppbar,
-            showAppbar: showAppbar,
-          ),
-        ],
-      ),
+      body: images.value.length>0? 
+      FeedImageList(
+        images: images.value,
+        onEndReached: onScrollReachEndOfPage,
+        onRefresh: onRefresh,
+        hideAppbar: hideAppbar,
+        showAppbar: showAppbar,
+      ):Empty(),
     );
   }
 }
