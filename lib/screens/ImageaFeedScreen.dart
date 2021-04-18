@@ -5,6 +5,7 @@ import 'package:unsplash/hooks/useSize.dart';
 import 'package:unsplash/models/photo.dart';
 import 'package:unsplash/states/api.dart';
 import 'package:unsplash/widgets/appbar.dart';
+import 'package:unsplash/widgets/error.dart';
 import 'package:unsplash/widgets/feedImageList.dart';
 
 class ImageFeedScreen extends HookWidget {
@@ -18,16 +19,29 @@ class ImageFeedScreen extends HookWidget {
     var images = useState<List<Photo>>([]);
     var searchQuery = useState('');
     var loading = useState(true);
+    var error = useState(false);
+
     loadRegularImages() async {
       loading.value = true;
-      images.value.addAll(await api.getImages(currentPage.value, 30));
-      loading.value = false;
+      try {
+        images.value.addAll(await api.getImages(currentPage.value, 30));
+      } catch (e) {
+        error.value = true;
+      } finally {
+        loading.value = false;
+      }
     }
 
     loadSearchedImages() async {
       loading.value = true;
-      images.value.addAll(
-          await api.searchImages(searchQuery.value, currentPage.value, 30));
+      try {
+        images.value.addAll(
+            await api.searchImages(searchQuery.value, currentPage.value, 30));
+      } catch (e) {
+        error.value = true;
+      } finally {
+        loading.value = false;
+      }
       loading.value = false;
     }
 
@@ -54,14 +68,14 @@ class ImageFeedScreen extends HookWidget {
 
     onRefresh() async {
       loading.value = true;
-      currentPage.value = currentPage.value+1;
+      currentPage.value = currentPage.value + 1;
       images.value = [];
     }
 
     useEffect(() {
       loadImages.value();
     }, [currentPage.value, searchQuery.value]);
-
+    if (error.value) return ServerError();
     if (loading.value && currentPage.value == 1)
       return Container(
           width: size.width,

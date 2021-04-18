@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:photo_view/photo_view.dart';
@@ -13,41 +14,23 @@ class ImageDetail extends HookWidget {
   Widget build(BuildContext context) {
     var theme = useTheme();
     var size = useSize();
-    var navigator = useNavigation();
     return Scaffold(
-        body: Stack(
-      children: [
-        GestureDetector(
-          onPanUpdate: (details) {
-            navigator.pop();
-          },
-          child: Container(
-              height: size.height,
-              color: theme.primaryColorLight,
-              padding: EdgeInsets.all(5),
-              child: Stack(
-                children: [
-                  PhotoView(
-                    gestureDetectorBehavior: HitTestBehavior.translucent,
-                    heroAttributes: PhotoViewHeroAttributes(
-                      tag: image.id,
-                      transitionOnUserGestures: true,
-                    ),
-                    imageProvider: NetworkImage(image.urls.small),
-                    backgroundDecoration:
-                        BoxDecoration(color: theme.primaryColorLight),
+        body: Container(
+            height: size.height,
+            color: theme.primaryColorLight,
+            padding: EdgeInsets.all(5),
+            child: Stack(
+              children: [
+                PhotoView(
+                  heroAttributes: PhotoViewHeroAttributes(
+                    tag: image.id,
+                    transitionOnUserGestures: true,
                   ),
-                ],
-              )),
-        ),
-        Positioned(
-            top: MediaQuery.of(context).padding.top + 10,
-            left: 10,
-            child: IconButton(
-              onPressed: navigator.pop,
-              icon: Icon(Icons.arrow_back_ios),
-            )),
-      ],
-    ));
+                  imageProvider: CachedNetworkImageProvider(image.urls.regular),
+                  backgroundDecoration:
+                      BoxDecoration(color: theme.primaryColorLight),
+                ),
+              ],
+            )));
   }
 }
