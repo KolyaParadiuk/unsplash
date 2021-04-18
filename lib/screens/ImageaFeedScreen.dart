@@ -32,39 +32,44 @@ class ImageFeedScreen extends HookWidget {
     }
 
     onScrollReachEndOfPage() {
-      currentPage.value = currentPage.value + 1;
+      if (!loading.value) {
+        loading.value = true;
+        currentPage.value = currentPage.value + 1;
+      }
     }
 
     var loadImages = useState(loadRegularImages);
 
     onSearchSubmited(String s) {
+      FocusScope.of(context).unfocus();
+      if (s != searchQuery.value) {
+        loading.value = true;
+        currentPage.value = 1;
+        images.value = [];
+        searchQuery.value = s;
+        if (s == "") return loadImages.value = loadRegularImages;
+        loadImages.value = loadSearchedImages;
+      }
+    }
+
+    onRefresh() async {
       loading.value = true;
-      currentPage.value = 1;
+      currentPage.value = currentPage.value+1;
       images.value = [];
-      searchQuery.value = s;
-      if (s == "") return loadImages.value = loadRegularImages;
-      loadImages.value = loadSearchedImages;
     }
 
     useEffect(() {
       loadImages.value();
     }, [currentPage.value, searchQuery.value]);
 
-    loadingPalceholder() => loading.value && currentPage.value == 1
-        ? Container(
-            width: size.width,
-            height: size.height,
-            color: theme.primaryColorLight.withOpacity(0.5),
-            child: Center(child: CircularProgressIndicator()))
-        : Container();
-
-    // if (loading.value && currentPage.value == 1)
-    //   return Container(
-    //       width: size.width,
-    //       height: size.height,
-    //       color: theme.primaryColorLight.withOpacity(0.5),
-    //       child: Center(child: CircularProgressIndicator()));
+    if (loading.value && currentPage.value == 1)
+      return Container(
+          width: size.width,
+          height: size.height,
+          color: theme.primaryColorLight,
+          child: Center(child: CircularProgressIndicator()));
     return Scaffold(
+      backgroundColor: theme.primaryColorLight,
       appBar: PreferredSize(
           preferredSize:
               Size.fromHeight(MediaQuery.of(context).padding.top + 70),
@@ -74,10 +79,10 @@ class ImageFeedScreen extends HookWidget {
       body: Stack(
         children: [
           FeedImageList(
-              images: images.value,
-              onEndReached: onScrollReachEndOfPage,
-              loading: loading.value),
-          loadingPalceholder()
+            images: images.value,
+            onEndReached: onScrollReachEndOfPage,
+            onRefresh: onRefresh,
+          ),
         ],
       ),
     );

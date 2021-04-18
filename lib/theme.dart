@@ -5,7 +5,7 @@ class UnspashTheme {
   static ThemeData theme = ThemeData(
     primaryColor: Color(0xFF102542),
     primaryColorLight: Color(0xFFFFFFFF),
-    accentColor: Color(0xFF942E91),
+    accentColor: Color(0xFF102542),
     backgroundColor: Color(0xFFF5F6F6),
     scaffoldBackgroundColor: Color(0xFFF5F6F6),
     colorScheme: ColorScheme(

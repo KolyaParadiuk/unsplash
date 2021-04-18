@@ -7,18 +7,20 @@ import 'package:unsplash/widgets/feedImage.dart';
 class FeedImageList extends HookWidget {
   final List<Photo> images;
   final Function onEndReached;
-  final bool loading;
+  final Function onRefresh;
 
-  FeedImageList(
-      {required this.images,
-      required this.onEndReached,
-      required this.loading});
+
+  FeedImageList({
+    required this.images,
+    required this.onEndReached,
+    required this.onRefresh
+  });
   @override
   Widget build(BuildContext context) {
     var scrollController = useState(ScrollController());
     var theme = useTheme();
     void scrollListener() async {
-      if (scrollController.value.position.extentAfter < 1000 && !loading) {
+      if (scrollController.value.position.extentAfter < 1000) {
         this.onEndReached();
       }
     }
@@ -45,19 +47,25 @@ class FeedImageList extends HookWidget {
       );
     }
 
-    return SingleChildScrollView(
-      controller: scrollController.value,
-      child: Container(
-        color: theme.primaryColorLight,
-        padding: EdgeInsets.only(left: 5, right: 5),
-        child: Column(
-          children: [
-            (Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:
-                  splitImagesToClumns().map((ic) => imageColumn(ic)).toList(),
-            )),
-          ],
+    return RefreshIndicator(
+          onRefresh: () async {
+          return await this.onRefresh();
+        },
+        child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        controller: scrollController.value,
+        child: Container(
+          color: theme.primaryColorLight,
+          padding: EdgeInsets.only(left: 5, right: 5),
+          child: Column(
+            children: [
+              (Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children:
+                    splitImagesToClumns().map((ic) => imageColumn(ic)).toList(),
+              )),
+            ],
+          ),
         ),
       ),
     );

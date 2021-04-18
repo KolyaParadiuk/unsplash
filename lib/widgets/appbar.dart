@@ -10,6 +10,10 @@ class SearchBar extends HookWidget {
     var theme = useTheme();
     var searchText = useState('');
     var textInputController = useState(TextEditingController());
+    border() => OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: BorderSide(color: theme.primaryColor),
+        );
     return (Container(
       margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       height: 70,
@@ -45,24 +49,9 @@ class SearchBar extends HookWidget {
               ],
             ),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(color: theme.primaryColor),
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(
-              color: theme.primaryColor,
-              width: 1.0,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(
-              color: theme.primaryColor,
-              width: 1.0,
-            ),
-          ),
+          focusedBorder: border(),
+          disabledBorder: border(),
+          enabledBorder: border(),
         ),
       ),
     ));
