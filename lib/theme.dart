@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 class UnspashTheme {
   static ThemeData theme = ThemeData(
-    primaryColor: Color(0xFF3B2168),
-    primaryColorLight:Colors.white,
+    primaryColor: Color(0xFF102542),
+    primaryColorLight: Color(0xFFFFFFFF),
     accentColor: Color(0xFF942E91),
     backgroundColor: Color(0xFFF5F6F6),
     scaffoldBackgroundColor: Color(0xFFF5F6F6),
     colorScheme: ColorScheme(
       primary: Color(0xFF000000),
       primaryVariant: Color(0xFF000000),
-      secondary: Color(0xFF4BC287),
+      secondary: Color(0xFFCDD7D6),
       secondaryVariant: Color(0xFF4BC287),
       background: Color(0xFFF5F6F6),
       surface: Color(0xFFF5F6F6),

@@ -49,8 +49,7 @@ class FeedImageList extends HookWidget {
       controller: scrollController.value,
       child: Container(
         color: theme.primaryColorLight,
-        padding: EdgeInsets.only(
-            top: MediaQuery.of(context).padding.top, left: 5, right: 5),
+        padding: EdgeInsets.only(left: 5, right: 5),
         child: Column(
           children: [
             (Row(

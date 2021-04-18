@@ -22,7 +22,7 @@ class ApiService {
       Photo? p = serializers.deserializeWith(Photo.serializer, element);
       return (p!);
     }).toList();
-    
+
     return result;
   }
 
@@ -32,9 +32,12 @@ class ApiService {
       "page": page.toString(),
       "per_page": perPage.toString()
     });
-    return response.data!["results"].map((element) {
+    List<dynamic> data = response.data!["results"];
+    List<Photo> result = data.map((element) {
       Photo? p = serializers.deserializeWith(Photo.serializer, element);
-      return p;
-    });
+      return (p!);
+    }).toList();
+
+    return result;
   }
 }
